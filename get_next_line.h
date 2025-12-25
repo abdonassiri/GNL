@@ -5,26 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnassir <abnassir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/23 06:42:14 by abnassir          #+#    #+#             */
-/*   Updated: 2025/12/23 06:45:41 by abnassir         ###   ########.fr       */
+/*   Created: 2025/12/24 22:18:51 by abnassir          #+#    #+#             */
+/*   Updated: 2025/12/25 16:18:53 by abnassir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h>
+# include <unistd.h>
+# include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 2
 # endif
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
-char	*ft_strdup(const char *s);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strdup(const char *source_str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(const char *s1, const char *s2);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
+char	*ft_strjoin(char const *s1, char const *s2);
 #endif

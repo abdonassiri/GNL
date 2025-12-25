@@ -5,102 +5,62 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abnassir <abnassir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/23 06:42:07 by abnassir          #+#    #+#             */
-/*   Updated: 2025/12/23 17:26:47 by abnassir         ###   ########.fr       */
+/*   Created: 2025/12/24 22:19:55 by abnassir          #+#    #+#             */
+/*   Updated: 2025/12/25 16:23:51 by abnassir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *str, int c)
+static char	*ft_tmp(char **tmp)
 {
-	while ((char)c != *str)
+	char	*ln;
+	char	*guard;
+	char	*end;
+
+	ln = NULL;
+	end = ft_strchr(*tmp, '\n');
+	if (end != NULL)
 	{
-		if (!*str)
-			return (NULL);
-		str++;
+		ln = ft_substr (*tmp, 0, ft_strlen(*tmp) - ft_strlen(end + 1));
+		guard = *tmp;
+		*tmp = ft_substr (*tmp, ft_strlen(ln), ft_strlen(*tmp) - ft_strlen(ln));
+		free(guard);
 	}
-	return ((char *)str);
+	else
+	{
+		ln = ft_strdup(*tmp);
+		free(*tmp);
+		*tmp = NULL;
+	}
+	return (ln);
 }
 
-char *ft_verify(char *tmp, char *buff)
+char	*get_next_line(int fd)
 {
-	char *str_dup;
-	int len;
+	char			*buff;
+	static char		*tmp;
+	char			*ln;
+	ssize_t			read_return;
 
-	str_dup = NULL;
-	len = 0;
-	if (tmp)
-	{
-		str_dup = ft_strdup(tmp);
-		free(tmp);
-		len = ft_strlen( str_dup) + ft_strlen(buff);
-		tmp = (char*)malloc(len + 1);
-		if(!tmp)
-			return (NULL);
-		tmp = ft_strjoin(str_dup, buff);
-		free(str_dup);
-	}
-	else if (!tmp)
-		tmp = ft_strdup(buff);
-	return (tmp);
-}
-void	ft_extract(char **ptr)
-{
-	char *str_dup;
-	str_dup = ft_strdup(ft_strchr(*ptr, '\n') + 1);
-	free(*ptr);
-	*ptr = str_dup;
-}
-char *ft_free(char **ptr_tmp, char **ptr_buff, ssize_t null)
-{
-	char	*line;
-	
-	line = NULL;
-	if (*ptr_tmp && **ptr_buff && null == 0)
-	{
-		line = ft_strdup(*ptr_tmp);
-		free(*ptr_tmp);
-		*ptr_tmp = NULL;
-		free(*ptr_buff);
-		*ptr_buff = NULL;
-		return (line);
-	}
-	if (ft_strchr(*ptr_tmp, '\n'))
-	{
-		line = ft_substr(*ptr_tmp, 0, (ft_strlen(*ptr_tmp) - ft_strlen(ft_strchr(*ptr_tmp, '\n'))) + 1);
-		ft_extract(ptr_tmp);
-		return (line);
-	}
-	return (line);
-	
-}
-
-char *get_next_line(int fd)
-{
-	static char	*tmp;
-	char		*buff;
-	char		*line;
-	ssize_t		null;
-
-	line = NULL;
-	buff = NULL;
-	null = 1;
+	ln = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	while(null != 0)
+	while ((ft_strchr(tmp, '\n')) == NULL)
 	{
-		if (!(ft_strchr(tmp, '\n')))
-			return (ft_free(&tmp, &buff, null));
-		buff = (char *)malloc(BUFFER_SIZE + 1);
+		buff = malloc((size_t)BUFFER_SIZE + 1);
 		if (!buff)
 			return (NULL);
-		null = read(fd, buff, BUFFER_SIZE);
-		if (null <= 0)
-			break;
-		tmp = ft_verify(tmp, buff);
+		read_return = read(fd, buff, BUFFER_SIZE);
+		if (read_return <= 0)
+		{
+			free(buff);
+			break ;
+		}
+		buff[read_return] = '\0';
+		tmp = ft_strjoin(tmp, buff);
 		free(buff);
-		buff = NULL;
 	}
-	return (ft_free(&tmp, &buff, null));
+	ln = ft_tmp(&tmp);
+	return (ln);
 }
