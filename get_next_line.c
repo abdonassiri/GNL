@@ -6,7 +6,7 @@
 /*   By: abnassir <abnassir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 22:19:55 by abnassir          #+#    #+#             */
-/*   Updated: 2025/12/26 17:08:17 by abnassir         ###   ########.fr       */
+/*   Updated: 2025/12/26 18:37:56 by abnassir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*get_next_line(int fd)
 		if (read_return <= 0)
 		{
 			free(buff);
-			if (!tmp || tmp[0] == '\0')
+			if (!tmp || tmp[0] == '\0' || read_return == -1)
 				return (free(tmp), tmp = NULL, NULL);
 			break ;
 		}

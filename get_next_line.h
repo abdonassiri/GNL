@@ -6,7 +6,7 @@
 /*   By: abnassir <abnassir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 22:18:51 by abnassir          #+#    #+#             */
-/*   Updated: 2025/12/25 16:18:53 by abnassir         ###   ########.fr       */
+/*   Updated: 2025/12/26 18:21:51 by abnassir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 2
+#  define BUFFER_SIZE 10
 # endif
 
 char	*get_next_line(int fd);
