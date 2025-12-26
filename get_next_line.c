@@ -6,7 +6,7 @@
 /*   By: abnassir <abnassir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 22:19:55 by abnassir          #+#    #+#             */
-/*   Updated: 2025/12/25 16:23:51 by abnassir         ###   ########.fr       */
+/*   Updated: 2025/12/26 17:08:17 by abnassir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ static char	*ft_tmp(char **tmp)
 	return (ln);
 }
 
+void	ft_ft(char *buff, char **tmp, ssize_t read_return)
+{
+	buff[read_return] = '\0';
+	*tmp = ft_strjoin(*tmp, buff);
+	free(buff);
+}
+
 char	*get_next_line(int fd)
 {
 	char			*buff;
@@ -55,12 +62,11 @@ char	*get_next_line(int fd)
 		if (read_return <= 0)
 		{
 			free(buff);
+			if (!tmp || tmp[0] == '\0')
+				return (free(tmp), tmp = NULL, NULL);
 			break ;
 		}
-		buff[read_return] = '\0';
-		tmp = ft_strjoin(tmp, buff);
-		free(buff);
+		ft_ft(buff, &tmp, read_return);
 	}
-	ln = ft_tmp(&tmp);
-	return (ln);
+	return ((ln = ft_tmp(&tmp)), ln);
 }
